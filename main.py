@@ -345,3 +345,148 @@ from random import choice
 print("Python标准库：从列表里随机选择一个元素")
 pets = ['dog', 'cat', 'goldfish', 'rabbit']
 print(choice(pets))
+
+#文件
+print("Python文件操作")
+print("文件路径中的反斜杠会进行转义，所以文件路径中可使用双反斜杠或者斜杠")
+filename = 'pi_digits.txt'
+print(filename)
+print('读取整个文件')
+with open(filename) as file_object:
+    lines = file_object.read()
+print(lines.strip())
+print('逐行读取文件')
+#文件中每行有换行符，print也会打印换行符
+with open(filename) as file_object:
+    for line in file_object:
+        print(line.rstrip())
+print('将文件内容存入列表再读取各行内容')
+with open(filename) as file_object:
+    lines = file_object.readlines()
+for line in lines:
+    print(line.rstrip())
+print('使用读取行的内容, 使用strip删除前后空格')
+with open(filename) as file_object:
+    lines = file_object.readlines()
+pi = ''
+for line in lines:
+    pi = pi + line.strip()
+print(pi)
+print("写文件，只能写入字符串，如果是数值则需要用str()转换")
+#读取模式'r'，写入模式'w'(会清空已存在文件内容)，附加模式'a'，读写模式'r+'，省略参数则默认只读模式
+filename = 'programming.txt'
+with open(filename, 'w') as file_object:
+    file_object.write('I love python\n')
+    file_object.write('I love programming\n')
+print("异常处理，求取文件单词数目")
+def count_words(filename):
+    try:
+        with open(filename, encoding='utf-8') as f:
+            contents = f.read()
+    except FileNotFoundError:
+        #静默失败，什么都不做
+        pass
+    else:
+        #split方法以空格或者其他自定义符合将字符串分拆成列表
+        words = contents.split()
+        #通过求取列表长度间接得到单词数目
+        num_words = len(words)
+        print(f"The file {filename} has about {num_words} words.")
+filenames = ['alice.txt', 'siddhartha.txt', 'moby_dick.txt', 'little_women.txt', 'programming.txt']
+for filename in filenames:
+    count_words(filename)
+#使用json文件存储数据
+print('使用json模块的dump和load方法保存和读取json文件数据')
+import json
+
+def get_stored_username():
+    filename = 'username.json'
+    try:
+        with open(filename) as f:
+            username = json.load(f)
+    except FileNotFoundError:
+        return None
+    else:
+        return username
+
+def get_new_username():
+    username = input("What is your name? ")
+    filename = 'username.json'
+    with open(filename, 'w') as f:
+        json.dump(username, f)
+    return username
+
+def greet_user():
+    username = get_stored_username()
+    if username:
+        print(f"Welcome back, {username}!")
+    else:
+        username = get_new_username()
+        print(f"We'll remember you when you come back, {username}!")
+
+greet_user()
+'''
+#测试代码，单元测试，测试用例
+print('unittest测试工具，一个点号表示一项测试通过，E表示错误，F表示断言失败')
+import unittest
+
+def get_formatted_name(first, last, middle=''):
+    if middle:
+        full_name = f"{first} {middle} {last}"
+    else:
+        full_name = f"{first} {last}"
+    return full_name.title()
+
+#测试代码放在继承自unittest.TestCase的这个类里
+class NamesTestCase(unittest.TestCase):
+    def test_first_last_name(self):
+        formatted_name = get_formatted_name('janis', 'joplin')
+        self.assertEqual(formatted_name, 'Janis Joplin')
+
+    def test_first_last_middle_name(self):
+        formatted_name = get_formatted_name(
+            'wolfgang', 'mozart', 'amadeus')
+        self.assertEqual(formatted_name, 'Wolfgang Amadeus Mozart')
+
+if __name__ == '__main__':
+    unittest.main()
+'''
+#测试类
+print('测试AnonymousSurvey类')
+class AnonymousSurvey:
+    def __init__(self, question):
+        self.question = question
+        self.responses = []
+        
+    def show_question(self):
+        print(self.question)
+        
+    def store_response(self, new_response):
+        self.responses.append(new_response)
+        
+    def show_results(self):
+        print("Survey results:")
+        for response in self.responses:
+            print(f"- {response}")
+
+import unittest
+
+class TestAnonymousSurvey(unittest.TestCase):
+    #setup用来创建一个调查对象和一组答案，供测试方法使用
+    def setUp(self):
+        question = "What language did you first learn to speak?"
+        self.my_survey = AnonymousSurvey(question)
+        self.responses = ['English', 'Spanish', 'Mandarin']
+
+    def test_store_single_response(self):
+        self.my_survey.store_response(self.responses[0])
+        self.assertIn(self.responses[0], self.my_survey.responses)
+
+    def test_store_three_responses(self):
+        for response in self.responses:
+            self.my_survey.store_response(response)
+        for response in self.responses:
+            self.assertIn(response, self.my_survey.responses)
+
+if __name__ == '__main__':
+    unittest.main()
