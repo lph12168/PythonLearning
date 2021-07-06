@@ -1,0 +1,3 @@
+APP： repo init -u git@192.168.5.200:/repo/SPH2020SPF10_manifest.git -m SPH2020SPF10_master.xml --repo-url=git@192.168.5.200:repo/tools/repo.git ​
+
+MODEM： repo init -u git@192.168.5.200:SPH2020SPFM10/manifest.git -m SPH2020SPFM10_master.xml --repo-url=git@192.168.5.200:repo/tools/repo.git

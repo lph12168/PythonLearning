@@ -1,0 +1,2 @@
+APP： repo init -u ssh://phliu@172.16.16.25:29418/SPH2020SPF10_manifest.git -m SPH2020SPF10_master.xml --repo-url=ssh://phliu@172.16.16.25:29418/tools/repo.git ​
+MODEM： repo init -u ssh://phliu@172.16.16.25:29418/SPH2020SPFM10/manifest.git -m SPH2020SPFM10_master.xml --repo-url=ssh://phliu@172.16.16.25:29418/tools/repo.git
